@@ -1,4 +1,4 @@
-# aed-2023-2-estoque
+# aed-2023-2-JogAqui
 O sistema implementado será um sistema de controle de estoque de jogos eletrônicos.
 O sistema terá as seguintes funcionalidades:
 - Cadastro de usuários;
