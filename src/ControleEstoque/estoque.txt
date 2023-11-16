@@ -1,0 +1,6 @@
+3,Alan Wake 2,20,250
+4,Final Fantasy VII,60,350
+6,Final Fantasy VII Remake Integrade,10,300
+5,Final Fantasy XV,50,150
+1,God Of War,100,200
+2,Homem Aranha,50,300
