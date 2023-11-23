@@ -8,6 +8,7 @@ class Produto
     public string Nome { get; set; }
     public int Quantidade { get; set; }
     public double PrecoUnitario { get; set; }
+    
 
     public Produto(int codigo, string nome, int quantidade, double precoUnitario)
     {
@@ -92,14 +93,96 @@ class Estoque
     }
 }
 
+class Usuario
+{
+    public string Username { get; set; }
+    public string Senha { get; set; }
+
+    public Usuario(string username, string senha)
+    {
+        Username = username;
+        Senha = senha;
+    }
+}
+
+class Autenticacao
+{
+    private List<Usuario> usuariosCadastrados;
+
+    public Autenticacao()
+    {
+        usuariosCadastrados = new List<Usuario>();
+        CarregarUsuariosDeArquivo("usuarios.txt");
+    }
+
+    public void CadastrarUsuario(string username, string senha)
+    {
+        Usuario novoUsuario = new Usuario(username, senha);
+        usuariosCadastrados.Add(novoUsuario);
+        Console.WriteLine($"Usuário {username} cadastrado com sucesso!");
+        SalvarUsuariosEmArquivo("usuarios.txt");
+    }
+
+    public Usuario FazerLogin(string username, string senha)
+    {
+        foreach (Usuario usuario in usuariosCadastrados)
+        {
+            if (usuario.Username == username && usuario.Senha == senha)
+            {
+                Console.WriteLine($"Login bem-sucedido! Bem-vindo, {username}.");
+                return usuario;
+            }
+        }
+        Console.WriteLine("Usuário ou senha incorretos.");
+        return null;
+    }
+
+    private void SalvarUsuariosEmArquivo(string nomeArquivo)
+    {
+        using (StreamWriter sw = new StreamWriter(nomeArquivo))
+        {
+            foreach (var usuario in usuariosCadastrados)
+            {
+                sw.WriteLine($"{usuario.Username},{usuario.Senha}");
+            }
+        }
+    }
+
+    private void CarregarUsuariosDeArquivo(string nomeArquivo)
+    {
+        if (File.Exists(nomeArquivo))
+        {
+            usuariosCadastrados.Clear();
+
+            using (StreamReader sr = new StreamReader(nomeArquivo))
+            {
+                string linha;
+                while ((linha = sr.ReadLine()) != null)
+                {
+                    string[] dados = linha.Split(',');
+                    if (dados.Length == 2)
+                    {
+                        string username = dados[0];
+                        string senha = dados[1];
+                        Usuario usuario = new Usuario(username, senha);
+                        usuariosCadastrados.Add(usuario);
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
 class Program
 {
     static void Main(string[] args)
     {
+        Autenticacao autenticacao = new Autenticacao();
         Estoque estoque = new Estoque();
         string arquivo = "estoque.txt";
-
-        Console.WriteLine("Sistema de Estoque");
+        Usuario usuarioLogado = null;
 
         // Carregar dados do arquivo se ele existir
         estoque.CarregarDadosDeArquivo(arquivo);
@@ -107,15 +190,54 @@ class Program
         bool executando = true;
         while (executando)
         {
-            Console.WriteLine("\nMenu:");
-            Console.WriteLine("1. Adicionar Produto");
-            Console.WriteLine("2. Listar Produtos");
-            Console.WriteLine("3. Ordenar Produtos por Nome");
-            Console.WriteLine("4. Salvar Dados em Arquivo");
-            Console.WriteLine("5. Sair");
-            Console.Write("Escolha uma opção: ");
+            if (usuarioLogado == null)
+            {
+                Console.WriteLine("\nMenu:");
+                Console.WriteLine("1. Cadastrar Usuário");
+                Console.WriteLine("2. Fazer Login");
+                Console.WriteLine("3. Sair");
+                Console.Write("Escolha uma opção: ");
 
-            int opcao = int.Parse(Console.ReadLine());
+                int opcaoAutenticacao = int.Parse(Console.ReadLine());
+
+                switch (opcaoAutenticacao)
+                {
+                    case 1:
+                        Console.Write("Novo Username: ");
+                        string novoUsername = Console.ReadLine();
+                        Console.Write("Nova Senha: ");
+                        string novaSenha = Console.ReadLine();
+                        autenticacao.CadastrarUsuario(novoUsername, novaSenha);
+                        break;
+
+                    case 2:
+                        Console.Write("Username: ");
+                        string username = Console.ReadLine();
+                        Console.Write("Senha: ");
+                        string senha = Console.ReadLine();
+                        usuarioLogado = autenticacao.FazerLogin(username, senha);
+                        break;
+
+                    case 3:
+                        executando = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Opção inválida. Tente novamente.");
+                        break;
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nMenu:");
+                Console.WriteLine("1. Adicionar Produto");
+                Console.WriteLine("2. Listar Produtos");
+                Console.WriteLine("3. Ordenar Produtos por Nome");
+                Console.WriteLine("4. Salvar Dados em Arquivo");
+                Console.WriteLine("5. Fazer Logout");
+                Console.Write("Escolha uma opção: ");
+
+                int opcao = int.Parse(Console.ReadLine());
 
             switch (opcao)
             {
@@ -150,6 +272,11 @@ class Program
                     break;
 
                 case 5:
+                    usuarioLogado = null;
+                    Console.WriteLine("Logout realizado com sucesso.");
+                    break;
+
+                case 6:
                     executando = false;
                     break;
 
@@ -159,4 +286,5 @@ class Program
             }
         }
     }
+  }
 }
