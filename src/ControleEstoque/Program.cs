@@ -65,6 +65,19 @@ class Estoque
         }
     }
 
+public void AumentarQuantidadeProduto(int codigo, int quantidadeAumento)
+    {
+        if (tabelaHash.ContainsKey(codigo))
+        {
+            Produto produto = tabelaHash[codigo];
+            produto.Quantidade += quantidadeAumento;
+            Console.WriteLine($"Quantidade do produto {produto.Nome} aumentada para {produto.Quantidade}.");
+        }
+        else
+        {
+            Console.WriteLine($"Produto com código {codigo} não encontrado no estoque.");
+        }
+    }
     public void CarregarDadosDeArquivo(string nomeArquivo)
     {
         if (File.Exists(nomeArquivo))
@@ -231,11 +244,12 @@ class Program
             else
             {
                 Console.WriteLine("\nMenu:");
-                Console.WriteLine("1. Adicionar Produto");
+                Console.WriteLine("1. Cadastrar Produto");
                 Console.WriteLine("2. Listar Produtos");
                 Console.WriteLine("3. Ordenar Produtos por Nome");
-                Console.WriteLine("4. Salvar Dados em Arquivo");
-                Console.WriteLine("5. Fazer Logout");
+                Console.WriteLine("4. Aumentar Quantidade de Produto");
+                Console.WriteLine("5. Salvar Dados em Arquivo");
+                Console.WriteLine("6. Fazer Logout");
                 Console.Write("Escolha uma opção: ");
 
                 int opcao = int.Parse(Console.ReadLine());
@@ -268,16 +282,24 @@ class Program
                     break;
 
                 case 4:
+                Console.Write("Código do Produto: ");
+                int codigoAumento = int.Parse(Console.ReadLine());
+                Console.Write("Quantidade a Aumentar: ");
+                int quantidadeAumento = int.Parse(Console.ReadLine());
+                estoque.AumentarQuantidadeProduto(codigoAumento, quantidadeAumento);
+                break;
+
+                case 5:
                     estoque.SalvarDadosEmArquivo(arquivo);
                     Console.WriteLine("Dados salvos em arquivo.");
                     break;
 
-                case 5:
+                case 6:
                     usuarioLogado = null;
                     Console.WriteLine("Logout realizado com sucesso.");
                     break;
 
-                case 6:
+                case 7:
                     executando = false;
                     break;
 
