@@ -8,20 +8,19 @@ class Produto
     public string Nome { get; set; }
     public int Quantidade { get; set; }
     public double PrecoUnitario { get; set; }
-    public double Lucro { get; set; } 
+    
 
-    public Produto(int codigo, string nome, int quantidade, double precoUnitario, double lucro)
+    public Produto(int codigo, string nome, int quantidade, double precoUnitario)
     {
         Codigo = codigo;
         Nome = nome;
         Quantidade = quantidade;
         PrecoUnitario = precoUnitario;
-        Lucro = lucro;
     }
 
     public override string ToString()
     {
-        return $"Código: {Codigo}, Nome: {Nome}, Quantidade: {Quantidade}, Preço Unitário: {PrecoUnitario:C}, Lucro: {Lucro:C}";
+        return $"Código: {Codigo}, Nome: {Nome}, Quantidade: {Quantidade}, Preço Unitário: {PrecoUnitario:C}";
     }
 }
 
@@ -55,13 +54,6 @@ class Estoque
         produtos.Sort((p1, p2) => p1.Nome.CompareTo(p2.Nome));
     }
 
-    public void AdicionarProduto(Produto produto, double lucro)
-    {
-        produto.Lucro = lucro;
-        produtos.Add(produto);
-        tabelaHash.Add(produto.Codigo, produto);
-    }
-
     public void SalvarDadosEmArquivo(string nomeArquivo)
     {
         using (StreamWriter sw = new StreamWriter(nomeArquivo))
@@ -86,28 +78,28 @@ public void AumentarQuantidadeProduto(int codigo, int quantidadeAumento)
             Console.WriteLine($"Produto com código {codigo} não encontrado no estoque.");
         }
     }
-public void CarregarDadosDeArquivo(string nomeArquivo)
-{
-    if (File.Exists(nomeArquivo))
+    public void CarregarDadosDeArquivo(string nomeArquivo)
     {
-        produtos.Clear();
-        tabelaHash.Clear();
-
-        using (StreamReader sr = new StreamReader(nomeArquivo))
+        if (File.Exists(nomeArquivo))
         {
-            string linha;
-            while ((linha = sr.ReadLine()) != null)
+            produtos.Clear();
+            tabelaHash.Clear();
+
+            using (StreamReader sr = new StreamReader(nomeArquivo))
             {
-                string[] dados = linha.Split(',');
-                if (dados.Length == 5) // Agora são 5 valores por linha (código, nome, quantidade, preço unitário, lucro)
+                string linha;
+                while ((linha = sr.ReadLine()) != null)
                 {
-                    int codigo = int.Parse(dados[0]);
-                    string nome = dados[1];
-                    int quantidade = int.Parse(dados[2]);
-                    double precoUnitario = double.Parse(dados[3]);
-                    double lucro = double.Parse(dados[4]); // Adicionando o lucro
-                    Produto produto = new Produto(codigo, nome, quantidade, precoUnitario, lucro);
-                    AdicionarProduto(produto, lucro);
+                    string[] dados = linha.Split(',');
+                    if (dados.Length == 4)
+                    {
+                        int codigo = int.Parse(dados[0]);
+                        string nome = dados[1];
+                        int quantidade = int.Parse(dados[2]);
+                        double precoUnitario = double.Parse(dados[3]);
+                        Produto produto = new Produto(codigo, nome, quantidade, precoUnitario);
+                        AdicionarProduto(produto);
+                    }
                 }
             }
         }
@@ -273,11 +265,9 @@ class Program
                     int quantidade = int.Parse(Console.ReadLine());
                     Console.Write("Preço Unitário: ");
                     double preco = double.Parse(Console.ReadLine());
-                    Console.Write("Lucro: ");
-                    double lucro = double.Parse(Console.ReadLine()); // Novo atributo "Lucro"
-                    
-                    Produto novoProduto = new Produto(codigo, nome, quantidade, preco, lucro);
-                    estoque.AdicionarProduto(novoProduto, lucro);
+
+                    Produto novoProduto = new Produto(codigo, nome, quantidade, preco);
+                    estoque.AdicionarProduto(novoProduto);
                     break;
 
                 case 2:
@@ -320,5 +310,4 @@ class Program
         }
     }
   }
-}
 }

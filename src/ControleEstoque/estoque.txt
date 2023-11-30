@@ -1,4 +1,7 @@
-3,Alan Wake 2,50,250
-4,Final Fantasy VII,25,350
-1,God Of War,100,250
-2,God Of War Ragnarök,50,250
+3,Alan Wake 2,20,250
+4,Final Fantasy VII,60,350
+6,Final Fantasy VII Remake Integrade,10,300
+5,Final Fantasy XV,50,150
+1,God Of War,120,200
+7,God Of War Ragnarök,60,250
+2,Homem Aranha,50,300
