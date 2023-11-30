@@ -85,6 +85,66 @@ public void AumentarQuantidadeProduto(int codigo, int quantidadeAumento)
             Console.WriteLine($"Produto com código {codigo} não encontrado no estoque.");
         }
     }
+
+
+public void VenderProdutos(string arquivoVendas)
+    {
+        Console.WriteLine("Venda de Produtos:");
+        Console.Write("Quantos produtos diferentes deseja vender? ");
+        int numeroProdutos = int.Parse(Console.ReadLine());
+
+        Dictionary<Produto, int> produtosVenda = new Dictionary<Produto, int>();
+
+        for (int i = 0; i < numeroProdutos; i++)
+        {
+            Console.Write($"Informe o código do Produto {i + 1}: ");
+            int codigoProduto = int.Parse(Console.ReadLine());
+
+            if (tabelaHash.ContainsKey(codigoProduto))
+            {
+                Produto produto = tabelaHash[codigoProduto];
+                Console.Write($"Quantidade do Produto {produto.Nome} a vender: ");
+                int quantidadeVenda = int.Parse(Console.ReadLine());
+
+                if (quantidadeVenda <= produto.Quantidade)
+                {
+                    produtosVenda.Add(produto, quantidadeVenda);
+                }
+                else
+                {
+                    Console.WriteLine($"Erro: Não há quantidade suficiente de {produto.Nome} em estoque.");
+                    i--;  
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Erro: Produto com código {codigoProduto} não encontrado no estoque.");
+                i--;  
+            }
+        }
+
+
+        double lucroTotal = 0.0;
+
+        foreach (var venda in produtosVenda)
+        {
+            Produto produto = venda.Key;
+            int quantidadeVendida = venda.Value;
+
+            produto.Quantidade -= quantidadeVendida;
+            double lucroVenda = quantidadeVendida * produto.Lucro;
+            lucroTotal += lucroVenda;
+        }
+
+
+        using (StreamWriter sw = new StreamWriter(arquivoVendas, true))
+        {
+            sw.WriteLine($"Data: {DateTime.Now}, Lucro Total da Venda: {lucroTotal:C}");
+        }
+
+        Console.WriteLine($"Venda realizada com sucesso. Lucro total da venda: {lucroTotal:C}");
+    }
+
 public void CarregarDadosDeArquivo(string nomeArquivo)
 {
     if (File.Exists(nomeArquivo))
@@ -209,7 +269,6 @@ class Program
         string arquivo = "estoque.txt";
         Usuario usuarioLogado = null;
 
-        // Carregar dados do arquivo se ele existir
         estoque.CarregarDadosDeArquivo(arquivo);
 
         bool executando = true;
@@ -259,8 +318,9 @@ class Program
                 Console.WriteLine("2. Listar Produtos");
                 Console.WriteLine("3. Ordenar Produtos por Nome");
                 Console.WriteLine("4. Aumentar Quantidade de Produto");
-                Console.WriteLine("5. Salvar Dados em Arquivo");
-                Console.WriteLine("6. Fazer Logout");
+                Console.WriteLine("5. Vender Produtos");
+                Console.WriteLine("6. Salvar Dados em Arquivo");
+                Console.WriteLine("7. Fazer Logout");
                 Console.Write("Escolha uma opção: ");
 
                 int opcao = int.Parse(Console.ReadLine());
@@ -295,24 +355,28 @@ class Program
                     break;
 
                 case 4:
-                Console.Write("Código do Produto: ");
-                int codigoAumento = int.Parse(Console.ReadLine());
-                Console.Write("Quantidade a Aumentar: ");
-                int quantidadeAumento = int.Parse(Console.ReadLine());
-                estoque.AumentarQuantidadeProduto(codigoAumento, quantidadeAumento);
-                break;
+                    Console.Write("Código do Produto: ");
+                    int codigoAumento = int.Parse(Console.ReadLine());
+                    Console.Write("Quantidade a Aumentar: ");
+                    int quantidadeAumento = int.Parse(Console.ReadLine());
+                    estoque.AumentarQuantidadeProduto(codigoAumento, quantidadeAumento);
+                    break;
 
                 case 5:
+                    estoque.VenderProdutos("vendas.txt");
+                    break;
+
+                case 6:
                     estoque.SalvarDadosEmArquivo(arquivo);
                     Console.WriteLine("Dados salvos em arquivo.");
                     break;
 
-                case 6:
+                case 7:
                     usuarioLogado = null;
                     Console.WriteLine("Logout realizado com sucesso.");
                     break;
 
-                case 7:
+                case 8:
                     executando = false;
                     break;
 
