@@ -8,19 +8,20 @@ class Produto
     public string Nome { get; set; }
     public int Quantidade { get; set; }
     public double PrecoUnitario { get; set; }
-    
+    public double Lucro { get; set; } 
 
-    public Produto(int codigo, string nome, int quantidade, double precoUnitario)
+    public Produto(int codigo, string nome, int quantidade, double precoUnitario, double lucro)
     {
         Codigo = codigo;
         Nome = nome;
         Quantidade = quantidade;
         PrecoUnitario = precoUnitario;
+        Lucro = lucro;
     }
 
     public override string ToString()
     {
-        return $"Código: {Codigo}, Nome: {Nome}, Quantidade: {Quantidade}, Preço Unitário: {PrecoUnitario:C}";
+        return $"Código: {Codigo}, Nome: {Nome}, Quantidade: {Quantidade}, Preço Unitário: {PrecoUnitario:C}, Lucro: {Lucro:C}";
     }
 }
 
@@ -53,17 +54,23 @@ class Estoque
     {
         produtos.Sort((p1, p2) => p1.Nome.CompareTo(p2.Nome));
     }
+public void AdicionarProduto(Produto produto, double lucro)
+{
+    produto.Lucro = lucro;
+    produtos.Add(produto);
+    tabelaHash.Add(produto.Codigo, produto);
+}
 
-    public void SalvarDadosEmArquivo(string nomeArquivo)
+public void SalvarDadosEmArquivo(string nomeArquivo)
+{
+    using (StreamWriter sw = new StreamWriter(nomeArquivo))
     {
-        using (StreamWriter sw = new StreamWriter(nomeArquivo))
+        foreach (var produto in produtos)
         {
-            foreach (var produto in produtos)
-            {
-                sw.WriteLine($"{produto.Codigo},{produto.Nome},{produto.Quantidade},{produto.PrecoUnitario}");
-            }
+            sw.WriteLine($"{produto.Codigo},{produto.Nome},{produto.Quantidade},{produto.PrecoUnitario},{produto.Lucro}");
         }
     }
+}
 
 public void AumentarQuantidadeProduto(int codigo, int quantidadeAumento)
     {
@@ -78,33 +85,37 @@ public void AumentarQuantidadeProduto(int codigo, int quantidadeAumento)
             Console.WriteLine($"Produto com código {codigo} não encontrado no estoque.");
         }
     }
-    public void CarregarDadosDeArquivo(string nomeArquivo)
+public void CarregarDadosDeArquivo(string nomeArquivo)
+{
+    if (File.Exists(nomeArquivo))
     {
-        if (File.Exists(nomeArquivo))
-        {
-            produtos.Clear();
-            tabelaHash.Clear();
+        produtos.Clear();
+        tabelaHash.Clear();
 
-            using (StreamReader sr = new StreamReader(nomeArquivo))
+        using (StreamReader sr = new StreamReader(nomeArquivo))
+        {
+            string linha;
+            while ((linha = sr.ReadLine()) != null)
             {
-                string linha;
-                while ((linha = sr.ReadLine()) != null)
+                string[] dados = linha.Split(',');
+                if (dados.Length == 5)
                 {
-                    string[] dados = linha.Split(',');
-                    if (dados.Length == 4)
-                    {
-                        int codigo = int.Parse(dados[0]);
-                        string nome = dados[1];
-                        int quantidade = int.Parse(dados[2]);
-                        double precoUnitario = double.Parse(dados[3]);
-                        Produto produto = new Produto(codigo, nome, quantidade, precoUnitario);
-                        AdicionarProduto(produto);
-                    }
+                    int codigo = int.Parse(dados[0]);
+                    string nome = dados[1];
+                    int quantidade = int.Parse(dados[2]);
+                    double precoUnitario = double.Parse(dados[3]);
+                    double lucro = double.Parse(dados[4]);
+                    Produto produto = new Produto(codigo, nome, quantidade, precoUnitario, lucro);
+                    AdicionarProduto(produto);
                 }
             }
         }
     }
 }
+
+
+
+
 
 class Usuario
 {
@@ -265,9 +276,11 @@ class Program
                     int quantidade = int.Parse(Console.ReadLine());
                     Console.Write("Preço Unitário: ");
                     double preco = double.Parse(Console.ReadLine());
-
-                    Produto novoProduto = new Produto(codigo, nome, quantidade, preco);
-                    estoque.AdicionarProduto(novoProduto);
+                    Console.Write("Lucro: ");
+                    double lucro = double.Parse(Console.ReadLine()); // Novo atributo "Lucro"
+                    
+                    Produto novoProduto = new Produto(codigo, nome, quantidade, preco, lucro);
+                    estoque.AdicionarProduto(novoProduto, lucro);
                     break;
 
                 case 2:
@@ -310,4 +323,5 @@ class Program
         }
     }
   }
+}
 }
