@@ -8,19 +8,19 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\1216504\\.nuget\\packages\\": {}
+    "C:\\Users\\diogo\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\1216504\\Desktop\\TrabalhoFinal\\aed-2023-2-estoque\\src\\ControleEstoque\\ControleEstoque.csproj",
+      "projectUniqueName": "C:\\Users\\diogo\\OneDrive\\Desktop\\programação\\aed\\atividades\\estoque\\src\\ControleEstoque\\ControleEstoque.csproj",
       "projectName": "ControleEstoque",
-      "projectPath": "C:\\Users\\1216504\\Desktop\\TrabalhoFinal\\aed-2023-2-estoque\\src\\ControleEstoque\\ControleEstoque.csproj",
-      "packagesPath": "C:\\Users\\1216504\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\1216504\\Desktop\\TrabalhoFinal\\aed-2023-2-estoque\\src\\ControleEstoque\\obj\\",
+      "projectPath": "C:\\Users\\diogo\\OneDrive\\Desktop\\programação\\aed\\atividades\\estoque\\src\\ControleEstoque\\ControleEstoque.csproj",
+      "packagesPath": "C:\\Users\\diogo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\diogo\\OneDrive\\Desktop\\programação\\aed\\atividades\\estoque\\src\\ControleEstoque\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\1216504\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\diogo\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -51,16 +51,35 @@
           "net47",
           "net471",
           "net472",
-          "net48"
+          "net48",
+          "net481"
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[6.0.25, 6.0.25]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[6.0.25, 6.0.25]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[6.0.25, 6.0.25]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[6.0.25, 6.0.25]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

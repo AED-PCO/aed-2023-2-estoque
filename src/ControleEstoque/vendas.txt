@@ -1,1 +1,2 @@
 Data: 30/11/2023 20:20:59, Lucro Total da Venda: R$ 1.800,00
+Data: 11/12/2023 16:56:48, Lucro Total da Venda: R$ 5.500,00

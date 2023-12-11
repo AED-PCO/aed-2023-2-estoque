@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "q33vj28bKwnmM/qCyeV+1jKZNwL3Q4iycHDRXkNCXIHXqshpqrU5YGXj0GknmQogzdf1rj+O0gQjEOXXd8zLTw==",
+  "dgSpecHash": "u1bV3sFENuM2aH8MahrVvWwRLOuVG97ptJPWQEAzoLByKstuiu5krJvRxRgUX1XDcskxYNzyi7WMDttg5FTOWA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\1216504\\Desktop\\TrabalhoFinal\\aed-2023-2-estoque\\src\\ControleEstoque\\ControleEstoque.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\diogo\\OneDrive\\Desktop\\programação\\aed\\atividades\\estoque\\src\\ControleEstoque\\ControleEstoque.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\diogo\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\diogo\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\diogo\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\diogo\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.25\\microsoft.netcore.app.host.win-x64.6.0.25.nupkg.sha512"
+  ],
   "logs": []
 }

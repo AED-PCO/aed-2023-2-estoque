@@ -1,1 +1,2 @@
 Machado,123456
+diogo,123

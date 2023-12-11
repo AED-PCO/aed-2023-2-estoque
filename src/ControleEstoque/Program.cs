@@ -54,6 +54,17 @@ class Estoque
     {
         produtos.Sort((p1, p2) => p1.Nome.CompareTo(p2.Nome));
     }
+
+    public void OrdenarProdutosPorCodigo()
+    {
+        produtos.Sort((p1, p2) => p1.Codigo.CompareTo(p2.Codigo));
+    }
+
+    public void OrdenarProdutosPorQuantidade()
+    {
+        produtos.Sort((p1, p2) => p1.Quantidade.CompareTo(p2.Quantidade));
+    }
+
 public void AdicionarProduto(Produto produto, double lucro)
 {
     produto.Lucro = lucro;
@@ -172,7 +183,7 @@ public void CarregarDadosDeArquivo(string nomeArquivo)
         }
     }
 }
-
+}
 
 
 
@@ -317,75 +328,102 @@ class Program
                 Console.WriteLine("1. Cadastrar Produto");
                 Console.WriteLine("2. Listar Produtos");
                 Console.WriteLine("3. Ordenar Produtos por Nome");
-                Console.WriteLine("4. Aumentar Quantidade de Produto");
-                Console.WriteLine("5. Vender Produtos");
-                Console.WriteLine("6. Salvar Dados em Arquivo");
-                Console.WriteLine("7. Fazer Logout");
+                Console.WriteLine("4. Ordenar Produtos por Codigo");
+                Console.WriteLine("5. Ordenar Produtos por Quantidade");
+                Console.WriteLine("6. Aumentar Quantidade de Produto");
+                Console.WriteLine("7. Vender Produtos");
+                Console.WriteLine("8. Listar Vendas");
+                Console.WriteLine("9. Salvar Dados em Arquivo");
+                Console.WriteLine("10. Fazer Logout");
                 Console.Write("Escolha uma opção: ");
 
                 int opcao = int.Parse(Console.ReadLine());
 
-            switch (opcao)
-            {
-                case 1:
-                    Console.Write("Código do Produto: ");
-                    int codigo = int.Parse(Console.ReadLine());
-                    Console.Write("Nome do Produto: ");
-                    string nome = Console.ReadLine();
-                    Console.Write("Quantidade: ");
-                    int quantidade = int.Parse(Console.ReadLine());
-                    Console.Write("Preço Unitário: ");
-                    double preco = double.Parse(Console.ReadLine());
-                    Console.Write("Lucro: ");
-                    double lucro = double.Parse(Console.ReadLine()); // Novo atributo "Lucro"
+                switch (opcao)
+                {
+                    case 1:
+                        Console.Write("Código do Produto: ");
+                        int codigo = int.Parse(Console.ReadLine());
+                        Console.Write("Nome do Produto: ");
+                        string nome = Console.ReadLine();
+                        Console.Write("Quantidade: ");
+                        int quantidade = int.Parse(Console.ReadLine());
+                        Console.Write("Preço Unitário: ");
+                        double preco = double.Parse(Console.ReadLine());
+                        Console.Write("Lucro: ");
+                        double lucro = double.Parse(Console.ReadLine()); // Novo atributo "Lucro"
+                        
+                        Produto novoProduto = new Produto(codigo, nome, quantidade, preco, lucro);
+                        estoque.AdicionarProduto(novoProduto, lucro);
+                        break;
+
+                    case 2:
+                        Console.WriteLine("Produtos no Estoque:");
+                        estoque.ListarProdutos();
+                        break;
+
+                    case 3:
+                        estoque.OrdenarProdutosPorNome();
+                        Console.WriteLine("Produtos ordenados por Nome:");
+                        estoque.ListarProdutos();
+                        break;
+
+                    case 4:
+                        estoque.OrdenarProdutosPorCodigo();
+                        Console.WriteLine("Produtos ordenados por Codigo:");
+                        estoque.ListarProdutos();
+                        break;
+
+                    case 5:
+                        estoque.OrdenarProdutosPorQuantidade();
+                        Console.WriteLine("Produtos ordenados por Quantidade:");
+                        estoque.ListarProdutos();
+                        break;
+
+                    case 6:
+                        Console.Write("Código do Produto: ");
+                        int codigoAumento = int.Parse(Console.ReadLine());
+                        Console.Write("Quantidade a Aumentar: ");
+                        int quantidadeAumento = int.Parse(Console.ReadLine());
+                        estoque.AumentarQuantidadeProduto(codigoAumento, quantidadeAumento);
+                        break;
+
+                    case 7:
+                        estoque.VenderProdutos("vendas.txt");
+                        break;
+
+                    case 8:
+                        if (File.Exists("vendas.txt")){
+                            string[] linhas = File.ReadAllLines("vendas.txt");
+                            Console.WriteLine();
+                            foreach (string linha in linhas){
+                                Console.WriteLine(linha);
+                            }
+                        }
+                        else{
+                            Console.WriteLine("O arquivo não existe.");
+                        }
+                        break;
                     
-                    Produto novoProduto = new Produto(codigo, nome, quantidade, preco, lucro);
-                    estoque.AdicionarProduto(novoProduto, lucro);
-                    break;
+                    case 9:
+                        estoque.SalvarDadosEmArquivo(arquivo);
+                        Console.WriteLine("Dados salvos em arquivo.");
+                        break;
 
-                case 2:
-                    Console.WriteLine("Produtos no Estoque:");
-                    estoque.ListarProdutos();
-                    break;
+                    case 10:
+                        usuarioLogado = null;
+                        Console.WriteLine("Logout realizado com sucesso.");
+                        break;
 
-                case 3:
-                    estoque.OrdenarProdutosPorNome();
-                    Console.WriteLine("Produtos ordenados por Nome:");
-                    estoque.ListarProdutos();
-                    break;
+                    case 11:
+                        executando = false;
+                        break;
 
-                case 4:
-                    Console.Write("Código do Produto: ");
-                    int codigoAumento = int.Parse(Console.ReadLine());
-                    Console.Write("Quantidade a Aumentar: ");
-                    int quantidadeAumento = int.Parse(Console.ReadLine());
-                    estoque.AumentarQuantidadeProduto(codigoAumento, quantidadeAumento);
-                    break;
-
-                case 5:
-                    estoque.VenderProdutos("vendas.txt");
-                    break;
-
-                case 6:
-                    estoque.SalvarDadosEmArquivo(arquivo);
-                    Console.WriteLine("Dados salvos em arquivo.");
-                    break;
-
-                case 7:
-                    usuarioLogado = null;
-                    Console.WriteLine("Logout realizado com sucesso.");
-                    break;
-
-                case 8:
-                    executando = false;
-                    break;
-
-                default:
-                    Console.WriteLine("Opção inválida. Tente novamente.");
-                    break;
+                    default:
+                        Console.WriteLine("Opção inválida. Tente novamente.");
+                        break;
+                }
             }
         }
     }
-  }
-}
 }
